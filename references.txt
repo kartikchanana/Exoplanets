@@ -1,0 +1,3 @@
+http://bl.ocks.org/peterssonjonas/4a0e7cb8d23231243e0e
+interactive legends -> http://bl.ocks.org/DStruths/9c042e3a6b66048b5bd4
+http://dimplejs.org/advanced_examples_viewer.html?id=advanced_interactive_legends -> Need to use the dimple js library...

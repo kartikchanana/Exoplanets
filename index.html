@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Visualization</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <link rel="stylesheet" href="./css/brushing.css" charset="utf-8">
+    <link rel="stylesheet" href="./css/scatter.css" charset="utf-8">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body background="images/3.jpeg">
+<div class="container"  id="scatter">
+<br>
+<br>
+<br>
+<br>
+    <div class="page-header">
+        <h1 style="color: #FFFFFF" align="center">Unfolding The Mysteries Of Exoplanets </h1>
+    </div>
+    <p style="color: #FFFFFF">As NASA’s Kepler Space Telescope science team was wrapping up a 10-day trial run, they saw something that bordered on the unbelievable: the telescope's first detection of a rocky, Earth-sized world outside our solar system.
+        Exoplanets are planets beyond our own solar system. Thousands of them have been discovered in the past two decades, mostly with NASA's Kepler space telescope. At,
+    present they total upto more than 3400 and increasing everyday. </p>
+    <p style="color: #FFFFFF">These worlds come in a huge variety of sizes and orbits. Some are gigantic planets hugging close to their parent stars; others are icy, some rocky.
+        NASA and other agencies are looking for a special kind of planet: one that’s the same size as Earth, orbiting a sun-like star in the habitable zone.
+    </p>
+    <p style="color: #FFFFFF">The habitable zone is the range of distances from a star where a planet’s temperature allows liquid water oceans, critical for life on Earth. The earliest definition of the zone was based on simple thermal equilibrium, but current calculations of the habitable zone include many other factors, including the greenhouse effect of a planet’s atmosphere. This makes the boundaries of a habitable zone "fuzzy."</p>
+
+    <div style="color: #FFFFFF">
+        <h3 > Earth Similarity Index Visualization</h3>
+        <p>This visualization gives us a measure of the Earth Similarity Index value for some of the exoplanets discovered till date. A number of measures
+        related to the exoplanet such as radius, velocity, temperature are taken into consideration to calculate the ESI value. It falls in the range of 0-1,
+        1 meaning completely like Earth, and 0 meaning completely unlike Earth</p>
+        <p>The planets(white) shown in the outermost circle are the ones with the least ESI value, i.e. they are least likely to be like Earth. As we move towards
+            the inside the ESI value increases by a factor of 0.1 with decreasing circumference. You can click on the planet to zoom into it, and hover over to
+            get more generic information about them.
+        </p>
+    </div>
+
+<div class="container"  id="bubble_holder">
+    <iframe id="bubblechart" src = "bubble_chart/packedbubble.html" width="800" height="800" frameborder="0"
+            allowfullscreen ></iframe>
+</div>
+<div style="color: #FFFFFF">
+    <h3>Exoplanet Attributes Scatterplot </h3>
+    <p>This is a visualization comparing the different attributes </p>
+</div>
+    <span class="badge">Sort By</span>
+    <select name="data-list">
+        <option value="st_dist">Star Distance</option>
+        <option value="pl_bmassj">Planet Mass</option>
+        <option value="pl_radj">Planet Radius</option>
+        <option value="pl_orbper">Planet Orbital Period</option>
+    </select>
+    <div>
+        <script src="./js/planets_rep.js" charset="utf-8"></script>
+    </div>
+
+</div>
+</body>
+</html>

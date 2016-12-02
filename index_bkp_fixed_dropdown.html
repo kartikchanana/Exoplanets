@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Visualization</title>
+    <link rel="stylesheet" href="./css/scatter.css" charset="utf-8">
+</head>
+<body>
+<div id="scatter"></div>
+
+<input type="button" name="yAxis" value="yAxis">
+<div class="dropdown">
+    <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+    <div id="myDropdown" class="dropdown-content">
+        <a href="#">Link 1</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+        <a href="#">Link 4</a>
+    </div>
+</div>
+<select name="data-list">
+        <option value="st_dist">Star Distance</option>
+        <option value="pl_bmassj">Planet Mass</option>
+        <option value="pl_radj">Planet Radius</option>
+        <option value="pl_orbper">Planet Orbital Period</option>
+</select>
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src="./js/planets_rep.js" charset="utf-8"></script>
+</body>
+</html>
