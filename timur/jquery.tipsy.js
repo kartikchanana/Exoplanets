@@ -285,4 +285,22 @@
 			return dir.ns + (dir.ew ? dir.ew : '');
 		};
     };
+
+
+    $('.ref_e').tipsy({
+        gravity: 'n',
+        html: true,
+        title: function()
+        {
+            return "Size of the Earth" ;
+        }
+    });
+    $('.ref_j').tipsy({
+        gravity: 'n',
+        html: true,
+        title: function()
+        {
+            return "Size of the Jupiter" ;
+        }
+    });
 })(jQuery);
