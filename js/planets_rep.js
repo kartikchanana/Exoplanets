@@ -392,7 +392,7 @@ d3.csv("planets_updated.csv", function(data) {
 function placeSystemModel(planets, pl)
 {
 
-d3.selectAll(".system_model").remove(); //clear previous image.
+    d3.selectAll(".system_model").remove(); //clear previous image.
 
     var w = 1500;
     var h = 1500;
@@ -405,26 +405,26 @@ d3.selectAll(".system_model").remove(); //clear previous image.
     var orbs = d3.selectAll(".orbit");
     var systems = [];
 
-function contains(a, obj) {
-    for (var i = 0; i < a.length; i++) {
-        if (a[i] === obj) {
-            return true;
+    function contains(a, obj) {
+        for (var i = 0; i < a.length; i++) {
+            if (a[i] === obj) {
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 
-function indexOfEl(a, el)
-{
-	for(var i = 0; i < a.length; i++)
-	{
-		if(a[i] == el)
-			return i;
-	}
-	return -1;
-}
+    function indexOfEl(a, el)
+    {
+        for(var i = 0; i < a.length; i++)
+        {
+            if(a[i] == el)
+                return i;
+        }
+        return -1;
+    }
 
-queue()
+    d3_queue.queue()
 	.defer(d3.csv, 'hab_zone.csv')
 	.await(processData);
 
@@ -540,6 +540,7 @@ function processData(error, hab_zones) {
      .attr("r", systems[index]["scale_factor"] * systems[index]["ro"])
      .attr("cx", w/2)
      .attr("cy", h/2)
+      .style("fill", "green")
      .attr("class", "hab_zone_ro");
 
     svg.append("circle")
@@ -558,6 +559,7 @@ function processData(error, hab_zones) {
      .attr("r", 10)
      .attr("cx", w/2)
      .attr("cy", h/2)
+        .style("fill", "white")
      .attr("class", "sun").datum(systems[index]);
 
 
@@ -761,6 +763,7 @@ function placeEllOrbit(d, t, index)
 				    })
 			.attr("cy", 0)
 			.attr("rx", d["maj_axis"] * systems[index]["scale_factor"])
+            .style("fill", "white")
 			.attr("ry", function()
 				    {
 					var c = d["maj_axis"] * systems[index]["scale_factor"] * d["eccentr"]
