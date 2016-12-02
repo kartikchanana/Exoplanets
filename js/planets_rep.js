@@ -34,7 +34,7 @@ var xCat = "pl_disc_year",
     planetOrbitalInclination = "pl_orbincl",
     starRadii = "st_rad";
 
-var neg_val = -2000;
+var neg_val = -200000;
 
 d3.csv("planets_updated.csv", function(data) {
     var dateFormat = d3.time.format('%Y');
@@ -140,13 +140,13 @@ d3.csv("planets_updated.csv", function(data) {
                 poi = "NA",
                 sr = "NA";
 
-            if(d[starDist]!=-2000)
+            if(d[starDist]!=neg_val)
                 sd = d[starDist].toString();
-            if(d[planetRadii]!=-2000)
+            if(d[planetRadii]!=neg_val)
                 pr = d[planetRadii].toString() + "j";
-            if(d[planetMass]!=-2000)
+            if(d[planetMass]!=neg_val)
                 pm = d[planetMass].toString() +"j";
-            if(d[planetOrbitalPeriod]!=-2000)
+            if(d[planetOrbitalPeriod]!=neg_val)
                 pop = d[planetOrbitalPeriod].toString();
             if(d[planetOrbitalInclination]!= 0)
                 poi = d[planetOrbitalInclination].toString();
@@ -296,26 +296,6 @@ d3.csv("planets_updated.csv", function(data) {
         .attr("fill", "white");
 
 
-    // function show_system(element) {
-    //     var planet_name = element.pl_name;
-    //     var svg_height = d3.select("svg")
-    //         .attr("height");
-    //     if(svg_height == 500){
-    //     d3.select("svg")
-    //         .attr("height", outerHeight+150);}
-    //     else if(svg_height == 650){
-    //         d3.select("svg")
-    //             .attr("height", outerHeight);
-    //     }
-    //
-    //     var system = svg.append("rect")
-    //         .attr("class", "system")
-    //         .attr("width", width)
-    //         .attr("height", 200)
-    //         .attr("x", 0)
-    //         .attr("y", height+50)
-    //         .style("fill", "red");
-    // }
 
     function change() {
 
@@ -448,7 +428,7 @@ function processData(error, hab_zones) {
 
 				var planets = [];
 				var planet_el = {
-						 orbit_period: (planet["pl_orbper"] == -2000)? 365 : planet["pl_orbper"],
+						 orbit_period: (planet["pl_orbper"] == neg_val)? 365 : planet["pl_orbper"],
 						 maj_axis: (planet["pl_orbsmax"] == "")? 5 : planet["pl_orbsmax"],
 						 min_axis: 0,
 						 eccentr: (planet["pl_orbeccen"]=="")? 0 : planet["pl_orbeccen"],
@@ -467,7 +447,7 @@ function processData(error, hab_zones) {
 				systems[indexOfEl(uSystems, planet["pl_hostname"])]["num_planets"]++;
 
 				var planet_el = {
-						 orbit_period: (planet["pl_orbper"] == -2000)? 365 : planet["pl_orbper"],
+						 orbit_period: (planet["pl_orbper"] == neg_val)? 365 : planet["pl_orbper"],
 						 maj_axis: (planet["pl_orbsmax"] == "")? 5 : planet["pl_orbsmax"],
 						 min_axis: 0,
 						 eccentr: (planet["pl_orbeccen"]=="")?0:planet["pl_orbeccen"],
