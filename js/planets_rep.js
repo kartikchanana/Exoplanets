@@ -36,9 +36,10 @@ var xCat = "pl_disc_year",
 
 var neg_val = -200000;
 
+
 d3.csv("planets_updated.csv", function(data) {
     var dateFormat = d3.time.format('%Y');
-    var parseDate = dateFormat.parse
+    var parseDate = dateFormat.parse;
     // console.log("entering into the data"+dateFormat);
     // console.log("parseDate"+parseDate);
     data.forEach(function(d) {
@@ -221,9 +222,10 @@ d3.csv("planets_updated.csv", function(data) {
         .call(xAxis)
         .append("text")
         .classed("label", true)
-        .attr("x", width)
-        .attr("y", margin.bottom - 10)
+        .attr("x", width )
+        .attr("y", margin.bottom - 17)
         .style("text-anchor", "end")
+        .style("font-size","14px")
         .attr("fill", "white")
         .text("Discovery Year");
 
@@ -236,6 +238,7 @@ d3.csv("planets_updated.csv", function(data) {
         .attr("y", -margin.left)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
+        .style("font-size","14px")
         // .text(yCat);
         .text(function(d) {
             if(yCat == starDist){
@@ -372,41 +375,40 @@ d3.csv("planets_updated.csv", function(data) {
 function placeSystemModel(planets, pl)
 {
 
-    d3.selectAll(".system_model").remove(); //clear previous image.
+d3.selectAll(".system_model").remove(); //clear previous image.
 
-    var w = 1500;
-    var h = 1500;
-    var scaleAuFactor = 50;
-    var msInDay = 50;
-    var RE = 3;
-    var RJ = RE * 5;
-    var stopTimer = false;
+var w = 700;
+var h = 500;
+var scaleAuFactor = 50;
+var msInDay = 50;
+var RE = 4;
+var RJ = RE * 3;
+var stopTimer = false;
 
-    var orbs = d3.selectAll(".orbit");
-    var systems = [];
+var systems = [];
 
-    function contains(a, obj) {
-        for (var i = 0; i < a.length; i++) {
-            if (a[i] === obj) {
-                return true;
-            }
+function contains(a, obj) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] === obj) {
+            return true;
         }
-        return false;
     }
+    return false;
+}
 
-    function indexOfEl(a, el)
-    {
-        for(var i = 0; i < a.length; i++)
-        {
-            if(a[i] == el)
-                return i;
-        }
-        return -1;
-    }
+function indexOfEl(a, el)
+{
+	for(var i = 0; i < a.length; i++)
+	{
+		if(a[i] == el)
+			return i;
+	}
+	return -1;
+}
 
     d3_queue.queue()
-	.defer(d3.csv, 'hab_zone.csv')
-	.await(processData);
+    .defer(d3.csv, 'hab_zone.csv')
+    .await(processData);
 
 function processData(error, hab_zones) {
 
@@ -433,7 +435,7 @@ function processData(error, hab_zones) {
 						 min_axis: 0,
 						 eccentr: (planet["pl_orbeccen"]=="")? 0 : planet["pl_orbeccen"],
 						 planet_name: planet["pl_name"],
-						 radius: planet["pl_radj"],
+						 radius: (planet["pl_radj"] == neg_val)? -1 : planet["pl_radj"],
 						 speed: (planet["pl_orbper"] != "")? msInDay / planet["pl_orbper"] : 0.01,
 						 mass: planet["pl_bmassj"],
 						 name: planet["pl_hostname"] + "-" + planet["pl_letter"]
@@ -452,7 +454,7 @@ function processData(error, hab_zones) {
 						 min_axis: 0,
 						 eccentr: (planet["pl_orbeccen"]=="")?0:planet["pl_orbeccen"],
 						 planet_name: planet["pl_name"],
-						 radius: planet["pl_radj"],
+						 radius: (planet["pl_radj"] == neg_val)? -1 : planet["pl_radj"],
 						 speed: (planet["pl_orbper"] != "")? msInDay / planet["pl_orbper"] : 0.01,
 						 mass: planet["pl_bmassj"],
 						 name: planet["pl_hostname"] + "-" + planet["pl_letter"]
@@ -469,7 +471,7 @@ function processData(error, hab_zones) {
 			systems[i]["ro"] = hab_zone["ro"];
                 });
 
- /* var index = 317;
+  var index = 317;
   //index = 2334;
   //index = 2424; //524 <----- strange!
   //index = 524;
@@ -492,6 +494,11 @@ function processData(error, hab_zones) {
 			break;
 		}
 	}
+	if(systems[i]["name"] == "CoRoT-16") //HIJI 865.0519031141869 ups And HIJI 736.3770250368188
+	{
+		index = i;
+		break;
+	}
   }
 
 
@@ -502,70 +509,89 @@ function processData(error, hab_zones) {
 
   for(var i = 0; i < systems.length; i++)
   {
-	if(systems[i]["name"] == pl["pl_hostname"])
-	{
-		index = i;
-		break;
-	}
+  	if(systems[i]["name"] == pl["pl_hostname"])
+  	{
+  		index = i;
+  		break;
+  	}
   }
+  console.log("NAME:", pl["pl_hostname"]); 
   //console.log(index);
   //console.log("nipah: ", systems[i]["pl_set"][0]);
-  var svg = d3.select("body")
+  var svg = d3.select("#my1")
               .insert("svg")
               .attr("width", w)
               .attr("height", h)
 	      .attr("class", "system_model");
 
+  var svg1 = d3.select("#my2")
+               .insert("svg")
+               .attr("width", 100)
+               .attr("height", h)
+	       .attr("class", "system_model");
+  //console.log(svg[0]);
+  /*svg.append("rect")
+     .attr("x", 0)
+     .attr("y", 0)
+     .attr("width", w)
+     .attr("height", h)
+     .style("fill", "white");*/
+
   svg.append("circle")
-     .attr("r", systems[index]["scale_factor"] * systems[index]["ro"])
+     .attr("r", ((systems[index]["scale_factor"] * systems[index]["ro"]) > 250)? 0 : (systems[index]["scale_factor"] * systems[index]["ro"]))
      .attr("cx", w/2)
      .attr("cy", h/2)
-      .style("fill", "green")
      .attr("class", "hab_zone_ro");
-
-    svg.append("circle")
-     .attr("r", systems[index]["scale_factor"] * systems[index]["ri"])
+  
+  svg.append("circle")
+     .attr("r", ((systems[index]["scale_factor"] * systems[index]["ro"]) > 250)? 0 : (systems[index]["scale_factor"] * systems[index]["ri"]))
      .attr("cx", w/2)
      .attr("cy", h/2)
      .attr("class", "hab_zone_ri");
 
-    svg.append("circle")
+  console.log("Earth orbit: ", systems[index]["scale_factor"]);
+  svg.append("circle")
      .attr("class", "earth_orbit")
      .attr("cx", w/2)
      .attr("cy", h/2)
-     .attr("r", (systems[index]["scale_factor"] > 500)? 500 : systems[index]["scale_factor"]);
+     .attr("r", (systems[index]["scale_factor"] > 2000)?0:systems[index]["scale_factor"]); console.log("SSS", systems[index]["scale_factor"] * systems[index]["pl_set"][systems[index]["pl_set"].length - 1]["maj_axis"]);
+ 
+  svg.append("circle")
+     .style("fill", "white")
+     .attr("cx", w/2)
+     .attr("cy", h/2)
+     .attr("r", systems[index]["scale_factor"] - 8);
 
-    svg.append("circle")
+  svg.append("circle")
      .attr("r", 10)
      .attr("cx", w/2)
      .attr("cy", h/2)
-        .style("fill", "white")
      .attr("class", "sun").datum(systems[index]);
-
 
   var container = svg.append("g")
         .attr("transform", "translate(" + w/2 + "," + h/2 + ")")
-
+  var cr = 0;
+  var cb = 0;
   container.selectAll("g.planet")
            .data(systems[index]["pl_set"]).enter()
-           .append("g").each(function(d)
+           .append("g").each(function(d) 
 					{
 						placeOrbit(d, this, index);
-
+						
           					d3.select(this).append("circle")
 							       .attr("r", function()
 										{
-											if(d["radius"] != "")
+											if(d["radius"] != "" && d["radius"] > 0)
 												if(d["radius"] > 0.25)
-													return (RJ * d["radius"] > 20) ? 20 : RJ * d["radius"];
+													return (RJ * d["radius"] > 14) ? 14 : RJ * d["radius"];
 												else
-													return (RE * d["radius"] < 5) ? 5 : RE * d["radius"];
-
+													return (RE * d["radius"] < 2) ? 2 : RE * d["radius"];
+											//console.log(d["mass"]);
 											if(d["mass"] != "")
-												if(d["mass"] > 0.25)
-													return (RJ * d["mass"] > 20) ? 20 : RJ * d["mass"];
+												if(d["mass"] > 0.03)
+													return (RJ * d["mass"] > 14) ? 14 : (RJ * d["mass"] < 8)? 8 : RJ * d["mass"];
 												else
-													return (RE * d["mass"] < 5) ? 5 : RE * d["mass"] > 7;
+													return (d["mass"] / 0.003 * RE > 8)? 8 : (d["mass"] / 0.003 * RE < 2)? 2 : d["mass"] / 0.003 * RE;
 											return 5;
 										})
 							       .attr("cx",d["maj_axis"] * systems[index]["scale_factor"] * d["eccentr"] + d["maj_axis"] * systems[index]["scale_factor"])
@@ -578,7 +604,33 @@ function processData(error, hab_zones) {
 							       .on("mouseout", function()
 									       {
 											stopTimer = false;
-									       });
+									       })
+							       .style("fill", function()
+									      {
+										if(cr == 0 && (d["mass"] / 0.003 >= 10))
+										{
+											svg1.append("circle")
+										    	.attr("r", 10)
+										    	.attr("cx", 100/2)
+											.attr("cy", h / 2 + 70)
+											.style("fill", "#e73b3b")
+											.style("stroke", "black")
+											.attr("class", "red_pl");
+											cr++;
+										}
+										if(cb == 0 && (d["mass"] / 0.003 < 10))
+										{
+											svg1.append("circle")
+										    	.attr("r", 5)
+										    	.attr("cx", 100/2)
+											.attr("cy", h / 2 + 110)
+											.style("fill", "#4e9cc9")
+											.style("stroke", "black")
+											.attr("class", "blue_pl");
+											cb++;
+										}
+										return (d["mass"] / 0.003 < 10)? "#4e9cc9":"#e73b3b";
+									      });
         				});
   var t = 0;
   var startTime = new Date().getTime();
@@ -616,56 +668,156 @@ function processData(error, hab_zones) {
 		systems[index]["pl_set"][i]["speed"] /= speedScaleFactor;
   }
 
-    var orbs = d3.selectAll(".orbit");
+  svg1.append("circle")
+      .attr("r", RJ)
+      .attr("cx", 100/2)
+      .attr("cy", h/2 - 25)
+      .attr("class", "ref_j");
 
-    svg.append("circle")
-        .attr("r", RJ)
-        .attr("cx", w/2 + 3 * parseInt(orbs[0][orbs[0].length - 1].attributes.rx.value))
-        .attr("cy", h/2)
-        .attr("class", "ref_j");
-    svg.append("circle")
-        .attr("r", RE)
-        .attr("cx", w/2 + 3 * parseInt(orbs[0][orbs[0].length - 1].attributes.rx.value))
-        .attr("cy", h/2 + 50)
-        .attr("class", "ref_e");
+  svg1.append("circle")
+      .attr("r", RE)
+      .attr("cx", 100/2) 
+      .attr("cy", h/2 + 25)
+      .attr("class", "ref_e");
 
-$('.planet').tipsy({
-        gravity: 'w',
-        html: true,
+
+$('.planet').tipsy({ 
+        gravity: 'w', 
+        html: true, 
         title: function() {
 	  var d = this.__data__;
-          return d["name"] + "<br/>" + "Distance to star: " + parseFloat(d["maj_axis"]) + " AU" + "<br/>" + "Radius: " + ((d["radius"] == "")?"undifined":parseFloat(d["radius"])) + "<br/>" + "Mass: " + ((d["mass"] == "")?"undifined":(parseFloat(d["mass"]) + " Jupiter masses"));
+          return d["name"] + "<br/>" + "Distance to star: " + parseFloat(d["maj_axis"]) + " AU" + "<br/>" + "Radius: " + ((d["radius"] < 0)?"undifined":parseFloat(d["radius"])) + "<br/>" + "Mass: " + ((d["mass"] == "")?"undifined":(parseFloat(d["mass"]) + " Jupiter masses")); 
         }
       });
 
-$('.hab_zone_ro').tipsy({
-        gravity: 'w',
-        html: true,
+$('.hab_zone_ro').tipsy({ 
+        gravity: 'w', 
+        html: true, 
         title: function() {
-          return "habitable zone";
+          return "habitable zone"; 
         }
       });
 
-$('.sun').tipsy({
-        gravity: 'w',
-        html: true,
-        title: function()
+$('.sun').tipsy({ 
+        gravity: 'w', 
+        html: true, 
+        title: function() 
 	{
 	  var d = this.__data__;
-          return d["name"] + "<br/>" + "Number of planets: " + d["num_planets"];
+          return d["name"] + "<br/>" + "Number of planets: " + d["num_planets"]; 
         }
       });
 
-$('.earth_orbit').tipsy({
-        gravity: 'w',
-        html: true,
-        title: function()
+$('.earth_orbit').tipsy({ 
+        gravity: 'w', 
+        html: true, 
+        title: function() 
 	{
-          return "1 Astronomical Unit (AU). <br/> 1 AU equals the distance from the planet Earth to the Sun" ;
+          return "1 Astronomical Unit (AU). <br/> 1 AU equals the distance from the planet Earth to the Sun" ; 
+        }
+      });
+
+$('.ref_e').tipsy({ 
+        gravity: 's', 
+        html: true, 
+        title: function() 
+	{
+          return "Size of the Earth" ; 
+        }
+      });
+
+$('.red_pl').tipsy({ 
+        gravity: 's', 
+        html: true, 
+        title: function() 
+	{
+          return "Planet with the mass at least 10 masses of the Earth" ; 
+        }
+      });
+
+$('.blue_pl').tipsy({ 
+        gravity: 's', 
+        html: true, 
+        title: function() 
+	{
+          return "Planet with the mass at most 10 masses of the Earth" ; 
+        }
+      });
+
+var el = $('.ref_e');
+console.log("El:", el);
+console.log(el.tipsy('show'));
+
+$('.ref_j').tipsy({ 
+        gravity: 's', 
+        html: true, 
+        title: function() 
+	{
+          return "Size of the Jupiter" ; 
         }
       });
 
   //console.log(speed);
+
+  //for(var i = 0; i < tmp4[0].length; i++)
+  //{
+	//svg.attr("transform", "scale(0.5)");
+	//svg.attr("transform", "translate(" + w/2 + "," + h/2 + ")");
+
+  var orbs = d3.selectAll(".orbit");
+  console.log(orbs[0][orbs[0].length - 1].attributes.rx.value);
+  //console.log(orbs[0][1].attributes.ry.value);
+  console.log(orbs[0][orbs[0].length - 1].attributes.cx.value);
+
+  var star = d3.selectAll(".sun");
+  var eo = d3.selectAll(".earth_orbit");
+  var ref = d3.selectAll(".ref_j");
+  //console.log("REF:", ref[0]);
+  var scaleByEarthOrbit = false;
+  if( (parseFloat(eo[0][0].attributes.r.value) > h / 2) && (parseFloat(eo[0][0].attributes.r.value) > parseFloat(orbs[0][orbs[0].length - 1].attributes.cx.value)))
+	scaleByEarthOrbit = true;
+
+
+  if(!scaleByEarthOrbit && parseFloat(orbs[0][orbs[0].length - 1].attributes.cx.value) + parseFloat(orbs[0][orbs[0].length - 1].attributes.rx.value) >= w)
+  {
+	var scaleInd = (w / 2) / (parseFloat(orbs[0][orbs[0].length - 1].attributes.cx.value) + parseFloat(orbs[0][orbs[0].length - 1].attributes.rx.value));
+	
+	if(parseFloat(orbs[0][orbs[0].length - 1].attributes.ry.value) > h)
+	{
+		var scaleInd2 = (h / 2) / parseFloat(orbs[0][orbs[0].length - 1].attributes.ry.value);
+		scaleInd = (scaleInd < scaleInd2)?scaleInd:scaleInd2;
+	}
+
+	svg.attr("transform", "scale(" + scaleInd +")");
+	//svg.append("circle").attr("cx", 0).attr("cy", 0).attr("r", 10);
+        svg.attr("transform", function(d)
+			      {
+					return "translate(" + (w/2 - scaleInd * parseFloat(star[0][0].attributes.cx.value) - 20) + "," + (h/2 - scaleInd * parseFloat(star[0][0].attributes.cy.value) - 10) + ") " + this.getAttribute("transform");
+			      });
+	svg1.attr("transform", function(d)
+				{
+					console.log("here", parseFloat(orbs[0][orbs[0].length - 1].attributes.ry.value));
+					return "scale(" + scaleInd + ") " + "translate(" + (100/2 - scaleInd * parseFloat(ref[0][0].attributes.cx.value)) + "," + (h/2 - scaleInd * parseFloat(ref[0][0].attributes.cy.value)) + ")";  
+				}); 
+  }
+  else
+	if(scaleByEarthOrbit)
+	{
+		//console.log("HIJI", eo[0][0].attributes.r.value);
+		var scaleInd = (h / 2) / parseFloat(eo[0][0].attributes.r.value);
+		svg.attr("transform", "scale(" + scaleInd +")");
+        	svg.attr("transform", function(d)
+				      {
+					return "translate(" + (w/2 - scaleInd * parseFloat(star[0][0].attributes.cx.value) - 20) + "," + (h/2 - scaleInd * parseFloat(star[0][0].attributes.cy.value)) + ") " + this.getAttribute("transform");
+			      		});
+
+		svg1.attr("transform", function(d)
+					{
+						return "translate(" + (100/2 - scaleInd * parseFloat(ref[0][0].attributes.cx.value)) + "," + (h/2 - scaleInd * parseFloat(ref[0][0].attributes.cy.value)) + ") " + "scale(" + scaleInd + ")";  
+					});  
+	}
+
+  //} 
 
   d3.timer(function() {
 
@@ -682,11 +834,11 @@ $('.earth_orbit').tipsy({
 	//console.log(tmp[0][2].data);
 
         svg.selectAll(".planet")
-           .attr("cx", function(d, i)
+           .attr("cx", function(d, i) 
 		       {
           			var x = parseFloat(tmp[0][i].attributes.cx.value) + parseFloat(d["maj_axis"]) * systems[index]["scale_factor"] * Math.cos(speed[i]);
 				//console.log(d["maj_axis"] * scaleAuFactor * Math.cos(t));
-				//var x = parseFloat(this.attributes.cx.value) + 1;
+				//var x = parseFloat(this.attributes.cx.value) + 1; 
 				//console.log(i);
 	  			return x;
         	       })
@@ -738,12 +890,11 @@ function placeEllOrbit(d, t, index)
 	    d3.select(t).append("ellipse")
 			.attr("class", "orbit")
 			.attr("cx", function()
-				    {
+				    {	
 					return Math.floor(d["maj_axis"] * systems[index]["scale_factor"] * d["eccentr"]);
 				    })
 			.attr("cy", 0)
 			.attr("rx", d["maj_axis"] * systems[index]["scale_factor"])
-            .style("fill", "white")
 			.attr("ry", function()
 				    {
 					var c = d["maj_axis"] * systems[index]["scale_factor"] * d["eccentr"]
@@ -756,8 +907,5 @@ function placeEllOrbit(d, t, index)
 					return Math.floor(Math.sqrt(b));
 				    });
 }
-
-
-
 
 }

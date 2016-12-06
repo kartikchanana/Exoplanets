@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Visualization</title>
+    <title>Exoplanets - The next world</title>
 
 
 
@@ -81,9 +81,11 @@
         </p>
     </div>
 
-<div class="container"  id="bubble_holder">
-    <iframe id="bubblechart" src = "bubble_chart/packedbubble.html" width="800" height="800" frameborder="0"
+<div class="container"  id="main">
+    <iframe id="bubblechart" src = "bubble_chart/packedbubble.html" width="950" height="750" scrolling="no" frameborder="0"
             allowfullscreen ></iframe>
+
+
 </div>
 <div style="color: #FFFFFF">
     <h3>Exoplanet Attributes Scatterplot </h3>
@@ -101,14 +103,19 @@
         <option value="pl_bmassj">Planet Mass</option>
         <option value="pl_radj">Planet Radius</option>
         <option value="pl_orbper">Planet Orbital Period</option>
-        <option value="pl_habitable_data">Planets with Habitable zone</optionvalue>
+        <option value="pl_habitable_data">Planets with Habitable zone</option>
     </select>
-    <div>
-        <script src="./js/planets_rep.js" charset="utf-8"></script>
-    </div>
+
+
+
 
 </div>
+    <div id="my1" style="position: absolute; top: 2100px; left: 125px; width: 700px; height: 500px; background-color: azure;">
+        <div id="my2" style="position: absolute; top: 0px; left: 701px; width: 100px; height: 500px; background-color: rgb(0,0,13);"></div>
+    <!--&lt;!&ndash;</div>&ndash;&gt;</div>-->
 </body>
+
+    <script src="./js/planets_rep.js" charset="utf-8"></script>
 
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="./js/jquery.tipsy.js"></script>

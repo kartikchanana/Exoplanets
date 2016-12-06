@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="../colorbrewer.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
 <style>
 
     .node {
         cursor: pointer;
     }
 
+    #directions{
+        position: fixed;
+        bottom: 650px;
+        left: 750px;
+        width: 300px;
+    }
     .node:hover {
         stroke: #000;
         stroke-width: 1.5px;
@@ -26,20 +39,40 @@
     .node--leaf {
         pointer-events: all;
     }
+    .svg{
+        background: transparent;
+    }
+
+    body{
+        background: rgb(0,0,13);
+    }
 
 </style>
-<svg width="700" height="700"></svg>
+<div class="container" id="main">
+    <div id="directions" style="color: #FFFFFF;">
+        <i class="fa fa-mouse-pointer" aria-hidden="true" style="color: #FFFFFF;"></i> over planets to know more<br>
+        <i class="fa fa-hand-pointer-o" aria-hidden="true" style="color: #FFFFFF;"></i> to zoom in/out
+    </div>
+    <svg width="700" height="700"></svg>
+    <!--<input type="radio" name="scale-option" id="scaled"  checked>Scaled<br>-->
+    <!--<input type="radio" name="scale-option" id="unscaled">Unscaled<br>-->
+    <br>
+
+    <button class="btn btn-default" id="scaled">Scaled to Radius</button>
+    <button class="btn btn-success" id="unscaled">Scaled to ESI</button>
+</div>
+
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
 
     var svg = d3.select("svg"),
             margin = 20,
-            diameter = +svg.attr("width"),
+            diameter = svg.attr("width")-50,
             g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
     var color = d3.scaleLinear()
-            .domain([-6, 6])
+            .domain([6, 0])
             .range(["hsl(210,60%,80%)", "hsl(260,60%,10%)"])
             .interpolate(d3.interpolateHcl);
 
@@ -47,16 +80,19 @@
             .size([diameter - margin, diameter - margin])
             .padding(2);
 
-    d3.json("flare1.json", function(error, root) {
+
+    d3.json("exoEsi.json", function(error, root) {
         if (error) throw error;
 
-        root = d3.hierarchy(root)
+        var root3 = d3.hierarchy(root)
                 .sum(function(d) { return d.size; })
                 .sort(function(a, b) { return b.value - a.value; });
 
-        var focus = root,
-                nodes = pack(root).descendants(),
+
+        var focus = root3,
+                nodes = pack(root3).descendants(),
                 view;
+
 
         var circle = g.selectAll("circle")
                 .data(nodes)
@@ -64,38 +100,43 @@
                 .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
                 .style("fill", function(d) { return d.children ? color(d.depth) : null; })
                 .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); });
+        var color1 = d3.scaleOrdinal()
+                .domain(['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d'])
+                .range(colorbrewer.Reds[9]);
 
-        circle
+        var leafCircles = circle
                 .filter(function () {
                     if(this.attributes[0].value == "node node--leaf") {
                         return(this);
                     }
                 })
+                .style("fill", function(d) {return color1(d.data.Tsurf); })
                 .append("svg:title").text(function(d) {
-            return ("Exoplanet name: "+ d.data.name + "\n" + "Global ESI value: " + d.data.size
-            + "\n" + "Exoplanet radius: " + d.data.radius + " EU"
-            + "\n" + "Exoplanet density: " + d.data.density + " EU"
-                    + "\n" + "Surface temperature: " + d.data.Tsurf+ " K"
-                    + "\n" + "Equilibrium temperature: " + d.data.Teq+ " K"
-                    + "\n" + "Exoplanet velocity: " + d.data.ve+ "EU"
+                    return ("Exoplanet name: "+ d.data.name + "\n" + "Global ESI value: " + d.data.size
+                            + "\n" + "Exoplanet radius: " + d.data.radius + " EU"
+                            + "\n" + "Exoplanet density: " + d.data.density + " EU"
+                            + "\n" + "Surface temperature: " + d.data.Tsurf+ " K"
+                            + "\n" + "Equilibrium temperature: " + d.data.Teq+ " K"
+                            + "\n" + "Exoplanet velocity: " + d.data.ve+ "EU"
 
-            );});
+                    );});
+
 
         var text = g.selectAll("text")
                 .data(nodes)
                 .enter().append("text")
                 .attr("class", "label")
-                .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
-                .style("display", function(d) { return d.parent === root ? "inline" : "none"; })
-                ;
+                .style("fill-opacity", function(d) { return d.parent === root3 ? 1 : 0; })
+                .style("display", function(d) { return d.parent === root3 ? "inline" : "none"; })
+                .text(function(d) { return d.data.name; });
 
         var node = g.selectAll("circle,text");
 
         svg
                 .style("background", color(-1))
-                .on("click", function() { zoom(root); });
+                .on("click", function() { zoom(root3); });
 
-        zoomTo([root.x, root.y, root.r * 2 + margin]);
+        zoomTo([root3.x, root3.y, root3.r * 2 + margin]);
 
         function zoom(d) {
             var focus0 = focus; focus = d;
@@ -119,6 +160,182 @@
             node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
             circle.attr("r", function(d) { return d.r * k; });
         }
+
+
+
+    d3.select("#scaled")
+            .on("click",function(){
+                d3.select("#scaled").attr("class", "btn btn-success");
+                d3.select("#unscaled").attr("class", "btn btn-default");
+//                console.log("data: " + d3.select("#scaled").);
+//            console.log("scaled called");
+            svg.selectAll("circle").remove();
+
+//            console.log(svg.selectAll("circle"));
+        var root1 = d3.hierarchy(root)
+                .sum(function(d) { return d.radius; })
+                .sort(function(a, b) { return b.value - a.value; });
+
+
+        var focus = root1,
+                nodes = pack(root1).descendants(),
+                view;
+
+
+        var circle = g.selectAll("circle")
+                .data(nodes)
+                .enter().append("circle")
+                .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
+                .style("fill", function(d) { return d.children ? color(d.depth) : null; })
+                .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); });
+        var color1 = d3.scaleOrdinal()
+                .domain(['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d'])
+                .range(colorbrewer.Reds[9]);
+
+            var leafCircles = circle
+                                .filter(function () {
+                                    if(this.attributes[0].value == "node node--leaf") {
+                                        return(this);
+                                    }
+                                })
+                                .style("fill", function(d) {return color1(d.data.Tsurf); })
+                                .append("svg:title").text(function(d) {
+                            return ("Exoplanet name: "+ d.data.name + "\n" + "Global ESI value: " + d.data.size
+                                    + "\n" + "Exoplanet radius: " + d.data.radius + " EU"
+                                    + "\n" + "Exoplanet density: " + d.data.density + " EU"
+                                    + "\n" + "Surface temperature: " + d.data.Tsurf+ " K"
+                                    + "\n" + "Equilibrium temperature: " + d.data.Teq+ " K"
+                                    + "\n" + "Exoplanet velocity: " + d.data.ve+ "EU"
+
+                            );});
+
+
+        var text = g.selectAll("text")
+                .data(nodes)
+                .enter().append("text")
+                .attr("class", "label")
+                .style("fill-opacity", function(d) { return d.parent === root1 ? 1 : 0; })
+                .style("display", function(d) { return d.parent === root1 ? "inline" : "none"; })
+                .text(function(d) { return d.data.name; });
+
+        var node = g.selectAll("circle,text");
+
+        svg
+                .style("background", color(-1))
+                .on("click", function() { zoom(root1); });
+
+        zoomTo([root1.x, root1.y, root1.r * 2 + margin]);
+
+        function zoom(d) {
+            var focus0 = focus; focus = d;
+
+            var transition = d3.transition()
+                    .duration(d3.event.altKey ? 7500 : 750)
+                    .tween("zoom", function(d) {
+                        var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+                        return function(t) { zoomTo(i(t)); };
+                    });
+
+            transition.selectAll("text")
+                    .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+                    .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
+                    .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
+                    .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+        }
+
+        function zoomTo(v) {
+            var k = diameter / v[2]; view = v;
+            node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
+            circle.attr("r", function(d) { return d.r * k; });
+        }});
+
+
+
+
+    d3.select("#unscaled")
+            .on("click", function(){
+
+                d3.select("#unscaled").attr("class", "btn btn-success");
+                d3.select("#scaled").attr("class", "btn btn-default");
+            console.log("unscaled called");
+            svg.selectAll("circle").remove();
+
+            var root2 = d3.hierarchy(root)
+                    .sum(function(d) { return d.size; })
+                    .sort(function(a, b) { return b.value - a.value; });
+
+
+            var focus = root2,
+                    nodes = pack(root2).descendants(),
+                    view;
+
+
+            var circle = g.selectAll("circle")
+                    .data(nodes)
+                    .enter().append("circle")
+                    .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
+                    .style("fill", function(d) { return d.children ? color(d.depth) : null; })
+                    .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); });
+                var color1 = d3.scaleOrdinal()
+                        .domain(['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d'])
+                        .range(colorbrewer.Reds[9]);
+
+            var leafCircles = circle
+                    .filter(function () {
+                        if(this.attributes[0].value == "node node--leaf") {
+                            return(this);
+                        }
+                    })
+                    .style("fill", function(d) {return color1(d.data.Tsurf); })
+                    .append("svg:title").text(function(d) {
+                        return ("Exoplanet name: "+ d.data.name + "\n" + "Global ESI value: " + d.data.size
+                                + "\n" + "Exoplanet radius: " + d.data.radius + " EU"
+                                + "\n" + "Exoplanet density: " + d.data.density + " EU"
+                                + "\n" + "Surface temperature: " + d.data.Tsurf+ " K"
+                                + "\n" + "Equilibrium temperature: " + d.data.Teq+ " K"
+                                + "\n" + "Exoplanet velocity: " + d.data.ve+ "EU"
+
+                        );});
+
+
+            var text = g.selectAll("text")
+                    .data(nodes)
+                    .enter().append("text")
+                    .attr("class", "label")
+                    .style("fill-opacity", function(d) { return d.parent === root2 ? 1 : 0; })
+                    .style("display", function(d) { return d.parent === root2 ? "inline" : "none"; })
+                    .text(function(d) { return d.data.name; });
+
+            var node = g.selectAll("circle,text");
+
+            svg
+                    .style("background", color(-1))
+                    .on("click", function() { zoom(root2); });
+
+            zoomTo([root2.x, root2.y, root2.r * 2 + margin]);
+
+            function zoom(d) {
+                var focus0 = focus; focus = d;
+
+                var transition = d3.transition()
+                        .duration(d3.event.altKey ? 7500 : 750)
+                        .tween("zoom", function(d) {
+                            var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+                            return function(t) { zoomTo(i(t)); };
+                        });
+
+                transition.selectAll("text")
+                        .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+                        .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
+                        .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
+                        .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+            }
+
+            function zoomTo(v) {
+                var k = diameter / v[2]; view = v;
+                node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
+                circle.attr("r", function(d) { return d.r * k; });
+            }});
     });
 
 </script>
