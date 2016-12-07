@@ -526,16 +526,10 @@ function processData(error, hab_zones) {
 
   var svg1 = d3.select("#my2")
                .insert("svg")
-               .attr("width", 100)
+               .attr("width", 155)
                .attr("height", h)
 	       .attr("class", "system_model");
-  //console.log(svg[0]);
-  /*svg.append("rect")
-     .attr("x", 0)
-     .attr("y", 0)
-     .attr("width", w)
-     .attr("height", h)
-     .style("fill", "white");*/
+
 
   svg.append("circle")
      .attr("r", ((systems[index]["scale_factor"] * systems[index]["ro"]) > 250)? 0 : (systems[index]["scale_factor"] * systems[index]["ro"]))
@@ -557,10 +551,10 @@ function processData(error, hab_zones) {
      .attr("r", (systems[index]["scale_factor"] > 2000)?0:systems[index]["scale_factor"]); console.log("SSS", systems[index]["scale_factor"] * systems[index]["pl_set"][systems[index]["pl_set"].length - 1]["maj_axis"]);
  
   svg.append("circle")
-     .style("fill", "white")
+     .style("fill", "black")
      .attr("cx", w/2)
      .attr("cy", h/2)
-     .attr("r", systems[index]["scale_factor"] - 8);
+     .attr("r", systems[index]["scale_factor"]-8);
 
   svg.append("circle")
      .attr("r", 10)
@@ -611,22 +605,60 @@ function processData(error, hab_zones) {
 										{
 											svg1.append("circle")
 										    	.attr("r", 10)
-										    	.attr("cx", 100/2)
-											.attr("cy", h / 2 + 70)
+										    	.attr("cx", 20)
+											.attr("cy", 350)
 											.style("fill", "#e73b3b")
-											.style("stroke", "black")
+											.style("stroke", "white")
 											.attr("class", "red_pl");
+
+                                            svg1.selectAll("exoleast").remove();
+                                            svg1.selectAll("exolegend").remove();
+                                            svg1.append("text")
+                                                .attr("x", 0)
+                                                .attr("y", 320)
+                                                .text("Exopanet solar system")
+                                                .attr("font-size", "15px")
+                                                .attr("fill", "white")
+                                                .attr("class", "exolegend");
+
+
+                                            svg1.append("text")
+                                                .attr("x", 35)
+                                                .attr("y", 354)
+                                                .attr("font-size", "14px")
+                                                .style("fill", "white")
+                                                .text("Atleast 10x Earth")
+                                                .attr("class", "exoleast");
 											cr++;
 										}
 										if(cb == 0 && (d["mass"] / 0.003 < 10))
 										{
 											svg1.append("circle")
 										    	.attr("r", 5)
-										    	.attr("cx", 100/2)
-											.attr("cy", h / 2 + 110)
+										    	.attr("cx", 100/5)
+											.attr("cy", 385)
 											.style("fill", "#4e9cc9")
-											.style("stroke", "black")
+											.style("stroke", "white")
 											.attr("class", "blue_pl");
+
+                                            svg1.selectAll("exomost").remove();
+                                            svg1.selectAll("exolegend").remove();
+                                            svg1.append("text")
+                                                .attr("x", 0)
+                                                .attr("y", 320)
+                                                .text("Exopanet solar system")
+                                                .attr("font-size", "15px")
+                                                .attr("fill", "white")
+                                                .attr("class", "exolegend");
+
+                                            svg1.append("text")
+                                                .attr("x", 35)
+                                                .attr("y", 389)
+                                                .attr("font-size", "14px")
+                                                .style("fill", "white")
+                                                .text("Atmost 10x Earth")
+                                                .attr("class", "exomost");
+
 											cb++;
 										}
 										return (d["mass"] / 0.003 < 10)? "#4e9cc9":"#e73b3b";
@@ -668,17 +700,48 @@ function processData(error, hab_zones) {
 		systems[index]["pl_set"][i]["speed"] /= speedScaleFactor;
   }
 
+    svg1.append("text")
+        .attr("x", 22)
+        .attr("y", 160)
+        .text("SIZE LEGEND")
+        .attr("font-size", "16px")
+        .attr("fill", "white")
+        .attr("class", "text");
+
+    svg1.append("text")
+        .attr("x", 15)
+        .attr("y", 198)
+        .text("Our solar system")
+        .attr("font-size", "15px")
+        .attr("fill", "white")
+        .attr("class", "text");
   svg1.append("circle")
       .attr("r", RJ)
-      .attr("cx", 100/2)
+      .attr("cx", 100/5)
       .attr("cy", h/2 - 25)
       .attr("class", "ref_j");
 
+    svg1.append("text")
+        .attr("x", 35)
+        .attr("y", 230)
+        .text("Jupiter")
+        .attr("font-size", "14px")
+        .attr("fill", "white")
+        .attr("class", "text");
+
   svg1.append("circle")
       .attr("r", RE)
-      .attr("cx", 100/2) 
+      .attr("cx", 100/5)
       .attr("cy", h/2 + 25)
       .attr("class", "ref_e");
+
+    svg1.append("text")
+        .attr("x", 35)
+        .attr("y", 278)
+        .text("Earth")
+        .attr("font-size", "14px")
+        .attr("fill", "white")
+        .attr("class", "text");
 
 
 $('.planet').tipsy({ 
@@ -686,7 +749,7 @@ $('.planet').tipsy({
         html: true, 
         title: function() {
 	  var d = this.__data__;
-          return d["name"] + "<br/>" + "Distance to star: " + parseFloat(d["maj_axis"]) + " AU" + "<br/>" + "Radius: " + ((d["radius"] < 0)?"undifined":parseFloat(d["radius"])) + "<br/>" + "Mass: " + ((d["mass"] == "")?"undifined":(parseFloat(d["mass"]) + " Jupiter masses")); 
+          return d["name"] + "<br/>" + "Distance to star: " + parseFloat(d["maj_axis"]) + " AU" + "<br/>" + "Radius: " + ((d["radius"] < 0)?"Undefined":parseFloat(d["radius"])) + "<br/>" + "Mass: " + ((d["mass"] == "ou")?"":(parseFloat(d["mass"]) + " Jupiter masses"));
         }
       });
 
@@ -713,7 +776,7 @@ $('.earth_orbit').tipsy({
         html: true, 
         title: function() 
 	{
-          return "1 Astronomical Unit (AU). <br/> 1 AU equals the distance from the planet Earth to the Sun" ; 
+          return "1 Astronomical Unit (AU) <br/> 1 AU equals the distance from the planet Earth to the Sun" ;
         }
       });
 
