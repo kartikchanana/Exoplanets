@@ -1,6 +1,24 @@
 /**
  * Created by akshaya on 11/25/16.
  */
+function show_div(toShow)
+{
+    var navs=['motivation', 'design', 'visualization', 'about'];
+    for (i = 0; i < navs.length; i++) {
+        if(navs[i] != toShow){
+            var notShow = document.getElementById(navs[i]);
+            notShow.style.display = "none";
+            var notshowA = document.getElementById(navs[i] + "A");
+            notshowA.setAttribute("class", "");
+        }else{
+            var show = document.getElementById(toShow);
+            show.style.display = "";
+            var showA = document.getElementById(toShow + "A");
+            showA.setAttribute("class", "active");
+        }
+    }
+
+}
 var margin = { top: 50, right: 300, bottom: 50, left: 50 },
     margin2 = { top: 430, right:300, bottom: 20, left: 50},
     outerWidth = 1050,
@@ -40,59 +58,40 @@ var neg_val = -200000;
 d3.csv("planets_updated.csv", function(data) {
     var dateFormat = d3.time.format('%Y');
     var parseDate = dateFormat.parse;
-    // console.log("entering into the data"+dateFormat);
-    // console.log("parseDate"+parseDate);
     data.forEach(function(d) {
         d.dd = dateFormat.parse(d.pl_disc);
-        // console.log("entering into the loop"+d.dd+"typeof"+typeof d.dd);
         d.pl_disc_year = d.dd;
-        // d.pl_disc_year = d.dd.getFullYear().toString();
-        // d.pl_disc_year = d3.time.year(d.dd);
-        // console.log("print kara de ae khuda"+d.pl_disc_year+" type 0f"+typeof d.pl_disc_year);
-        // d.pl_disc = +d.pl_disc;
-        // console.log("this planet discovered in "+d.pl_disc)
 
 
         if(d.st_dist == 0) {
-            // console.log("stardist value"+d.st_dist);
             d.st_dist = +neg_val;
         } else {
             d.st_dist= +d.st_dist;
         }
 
         if( d.pl_radj == 0) {
-            // console.log("planet radius value"+ d.pl_radj);
             d.pl_radj= +neg_val;
         } else {
             d.pl_radj= +d.pl_radj;
         }
-        // d.pl_radj = +d.pl_radj;
-        // d.pl_bmassj = +d.pl_bmassj;
         if( d.pl_bmassj == 0) {
-            // console.log("planet radius value"+ d.pl_orbper);
             d.pl_bmassj= +neg_val;
         }
         d.pl_num = +d.pl_num;
-        // d.pl_orbper = +d.pl_orbper;
         if( d.pl_orbper == 0) {
-            // console.log("planet radius value"+ d.pl_orbper);
             d.pl_orbper= +neg_val;
         }
-        // console.log("orbital period is "+d.pl_orbper);
         d.pl_orbsmax = +d.pl_orbsmax;
         d.pl_orbincl = +d.pl_orbincl;
         d.st_teff = +d.st_teff;
         d.st_mass = +d.st_mass;
         d.st_rad = +d.st_rad;
-        // d.pl_name= +d.pl_name;
-        // console.log("what's the planets name?"+d.pl_name);
         d.pl_eqt = +d.pl_eqt;
         d.pl_locale = +d.pl_locale;
         d.pl_telescope = +d.pl_telescope;
         d.pl_mnum =+d.pl_mnum;
         d.rowid = +d.rowid;
         if( d.pl_habitable_data  == 0) {
-            // console.log("planet radius value"+ d.pl_orbper);
             d.pl_habitable_data = +neg_val;
         }
 
@@ -154,10 +153,6 @@ d3.csv("planets_updated.csv", function(data) {
             if(d[starRadii]!=0)
                 sr = d[starRadii].toString();
 
-            // return "Planet Name: " + d[planetName] + "<br>Distance from Earth: " + d[starDist]+
-            // "<br>Planet Radius: " + d[planetRadii]+"j" + "<br>Planet Mass: " + d[planetMass]+"j"+
-            // "<br>Discovery Method: " + d[planetDiscMethod] + "<br>Orbital Period: " + d[planetOrbitalPeriod]+
-            // "<br>Orbital Inclination: " + d[planetOrbitalInclination] + "<br>Star Radius: " + d[starRadii];
 
             return "Planet Name: " + d[planetName] + "<br>Distance from Earth: " + sd+
                 "<br>Planet Radius: " + pr + "<br>Planet Mass: " + pm+
@@ -254,7 +249,6 @@ d3.csv("planets_updated.csv", function(data) {
                 return "Approximate orbital period in earth days";
             }
         });
-    // .y1(function(d) { return y2(d[yCat]); });
 
     var objects = svg.append("svg")
         .classed("objects", true)
@@ -280,7 +274,6 @@ d3.csv("planets_updated.csv", function(data) {
         .data(data)
         .enter().append("circle")
         .classed("dot", true)
-        // .attr("r", function (d) { return 10 * Math.sqrt(d[rCat] / Math.PI); })
         .attr("r", 5)
         .attr("transform", transform)
         .style("fill", function(d) { return color(d[colorCat]); })
@@ -526,6 +519,8 @@ function processData(error, hab_zones) {
 
   var svg1 = d3.select("#my2")
                .insert("svg")
+                .attr("x", 155)
+                .attr("y", 10)
                .attr("width", 155)
                .attr("height", h)
 	       .attr("class", "system_model");

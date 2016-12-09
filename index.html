@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <title>Exoplanets - The next world</title>
-
-
-
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.3/d3-tip.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link href="./css/tipsy.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="./css/brushing.css" charset="utf-8">
     <link rel="stylesheet" href="./css/scatter.css" charset="utf-8">
@@ -52,7 +52,8 @@
     </style>
 </head>
 <body background="images/3.jpeg">
-<div class="container"  id="scatter">
+
+<div style="color: #FFFFFF" class="container" id="main">
 <br>
 <br>
 <br>
@@ -60,67 +61,180 @@
     <div class="page-header">
         <h1 style="color: #FFFFFF" align="center">Unfolding The Mysteries Of Exoplanets </h1>
     </div>
-    <p style="color: #FFFFFF">As NASA’s Kepler Space Telescope science team was wrapping up a 10-day trial run, they saw something that bordered on the unbelievable: the telescope's first detection of a rocky, Earth-sized world outside our solar system.
-        Exoplanets are planets beyond our own solar system. Thousands of them have been discovered in the past two decades, mostly with NASA's Kepler space telescope. At,
-    present they total upto more than 3400 and increasing everyday. </p>
-    <p style="color: #FFFFFF">These worlds come in a huge variety of sizes and orbits. Some are gigantic planets hugging close to their parent stars; others are icy, some rocky.
-        NASA and other agencies are looking for a special kind of planet: one that’s the same size as Earth, orbiting a sun-like star in the habitable zone.
-    </p>
-    <p style="color: #FFFFFF">The habitable zone is the range of distances from a star where a planet’s temperature allows liquid water oceans, critical for life on Earth. The earliest definition of the zone was based on simple thermal equilibrium, but current calculations of the habitable zone include many other factors, including the greenhouse effect of a planet’s atmosphere. This makes the boundaries of a habitable zone "fuzzy."</p>
-
-    <div style="color: #FFFFFF">
-        <h3 > Earth Similarity Index Visualization</h3>
-        <p>This visualization gives us a measure of the Earth Similarity Index value for some of the exoplanets discovered till date. A number of measures
-        related to the exoplanet such as radius, velocity, temperature are taken into consideration to calculate the ESI value. It falls in the range of 0-1,
-        1 meaning completely like Earth, and 0 meaning completely unlike Earth</p>
-        <p>The planets(white) shown in the outermost circle are the ones with the least ESI value, i.e. they are least likely to be like Earth. As we move towards
-            the inside the ESI value increases by a factor of 0.1 with decreasing circumference. You can click on the planet to zoom into it, and hover over to
-            get more generic information about them.
+    <ul class="nav nav-tabs">
+        <li role="presentation" id="aboutA" class="active"><a  href="#about" onclick="return show_div('about');">About</a></li>
+        <li role="presentation" id="motivationA"><a href="#motivation" onclick="return show_div('motivation');">Motivation</a></li>
+        <li role="presentation" id="designA"><a href="#design" onclick="return show_div('design');">Design</a></li>
+        <li role="presentation" id="visualizationA"><a  href="#visualization" onclick="return show_div('visualization');">Visualization</a></li>
+    </ul>
+    <br>
+    <br>
+    <div id="about">
+        <p>
+            Until nearly two decade ago, our understanding of how planets revolve around a star and how life forms on the planet was based only
+            on one sample set – Earth and its solar-system. As NASA’s Kepler Space Telescope science team was wrapping up a 10-day trial
+            run, they saw something that bordered on the unbelievable, the telescope's first detection of a rocky, Earth-sized world outside
+            our solar system. Astronomers in the recent years have made significant progress in expanding the database
+            of planets outside of our solar system. These extrasolar planets are termed as Exoplanets.
         </p>
+        <p>These worlds come in a huge variety of sizes and orbits. Some are gigantic planets hugging close to their parent stars, while others are icy,
+            and some are rocky. Most of these exoplanets have been found by NASA's Kepler mission. NASA and other agencies are looking for a special
+            kind of planet, one that’s the same size as Earth, orbiting a sun-like star in the habitable zone.
+        </p>
+        <p>The habitable zone is the range of distances from a star where a planet’s temperature allows liquid water oceans, critical for life on Earth.
+            The earliest definition of the zone was based on simple thermal equilibrium, but current calculations of the habitable zone include many
+            other factors, including the greenhouse effect of a planet’s atmosphere. This makes the boundaries of a habitable zone fuzzy.</p>
+        <br>
+        <h4>METHODS OF DISCOVERY</h4>
+        <h5 style="font-size: medium">Radial velocity</h5>
+        <p>
+            A star with a planet will move in its own small orbit in response to the planet's gravity. This leads to variations in the speed
+            with which the star moves toward or away from Earth, i.e. the variations are in the radial velocity of the star with respect to Earth.
+            The radial velocity can be deduced from the displacement in the parent star's spectral lines due to the Doppler effect.
+            The radial-velocity method measures these variations in order to confirm the presence of the planet using the binary mass function.
+        </p>
+        <h5 style="font-size: medium">Transit Photometry</h5>
+        <p>While the radial velocity method provides information about a planet's mass, the photometric method can determine the planet's radius.
+            If a planet crosses (transits) in front of its parent star's disk, then the observed visual brightness of the star drops by a small amount;
+            depending on the relative sizes of the star and the planet. For example, in the case of HD 209458, the star dims by 1.7%.
+            This method has two major disadvantages. First, planetary transits are only observable when the planet's orbit happens to be perfectly aligned
+            from the astronomers' vantage point. The second disadvantage of this method is a high rate of false detections. A 2012 study found that the
+            rate of false positives for transits observed by the Kepler mission could be as high as 40% in single-planet systems.</p>
+        <h5 style="font-size: medium">Astrometry</h5>
+        <p>This method consists of precisely measuring a star's position in the sky, and observing how that position changes over time. Originally,
+            this was done visually, with hand-written records. By the end of the 19th century, this method used photographic plates, greatly improving
+            the accuracy of the measurements as well as creating a data archive. If a star has a planet, then the gravitational influence of the planet
+            will cause the star itself to move in a tiny circular or elliptical orbit. Effectively, star and planet each orbit around their mutual
+            center of mass, as explained by solutions to the two-body problem. Since the star is much more massive, its orbit will be much
+            smaller. Frequently, the mutual center of mass will lie within the radius of the larger body. Consequently, it is easier to find planets
+            around low-mass stars, especially brown dwarfs.</p>
+
+        <h5 style="font-size: medium">Direct imaging</h5>
+        <p>Planets are extremely faint light sources compared to stars, and what little light comes from them tends to be lost in the glare from their
+            parent star. So in general, it is very difficult to detect and resolve them directly from their host star. Planets orbiting far enough from
+            stars to be resolved reflect very little starlight, so planets are detected through their thermal emission instead. It is easier to obtain
+            images when the star system is relatively near to the Sun, and when the planet is especially large (considerably larger than Jupiter),
+            widely separated from its parent star, and hot so that it emits intense infrared radiation. Images have then been made in the infrared,
+            where the planet is brighter than it is at visible wavelengths. Coronagraphs are used to block light from the star, while leaving the
+            planet visible. Direct imaging of an Earth-like exoplanet requires extreme optothermal stability. During the accretion phase of
+            planetary formation, the star-planet contrast may be even better in H alpha than it is in infrared – an H alpha survey is currently underway.
+        </p>
+
+        <h5 style="font-size: medium">Gravitational microlensing</h5>
+        <p>
+            Gravitational microlensing occurs when the gravitational field of a star acts like a lens, magnifying the light of a distant background star.
+            This effect occurs only when the two stars are almost exactly aligned. Lensing events are brief, lasting for weeks or days, as the two stars
+            and Earth are all moving relative to each other. More than a thousand such events have been observed over the past ten years.
+        </p>
+
+    </div>
+    <div id="motivation" style="display: none;">
+        <video width="80%" controls>
+            <source src="" type="video/mp4">
+            <source src="images/demo.mp4" type="video/mp4">
+        </video>
+
+        <div>
+            <br>
+            <p>
+                We've always wondered if we are in that special place in this universe, where life can sustain and there has always been that persistant
+                curiosity to search for life outside of the earth, and that curiosity itself has led to the discovery of more than 3400 extrasolar planets
+                out of which over 700 are in the habitable zone. The habitable zone is defined as a range of temperature where earth like life can sustain.
+                Though that looks very interesting, the data for these exoplanets contains thousands of details, so we thought why not present this data in a
+                way where non-experts can ask more informed questions, and therefore our goal is to provide interactive infoviz, where users can easily identify
+                earth-like planets.The data-set containing information about the physical and detection parameters of all the discovered exoplanets and
+                “potential candidate” exoplanet is kept up-to-date by NASA and CALTECH.
+            </p>
+            <p>
+                We started with a very abstract bubble chart to sort the planets by thier Earth Similarity Index that ranges between 0 & 1. The planets always
+                revolve in radial orbits, and are arranged likewise sorted by their ESI values. The ones towards the inside are likely to be like earth and will
+                have an ESI value closer to 1. They are also sized by the ESI values, with an option to scale them by actual radius values as well. The color
+                encoding is the surface temperature of the planet which is key for habitation to exist.
+            </p>
+            <p>
+                The next is a more informative scatterplot drawing comparisons between all the major attributes of the exoplanets against discovery year. The measure for y-axis can be toggled from
+                the drop down to draw interesting comparisons. The points are colored as per the method of discovery. Since most planets were found recently, we added zoom feature to the
+                plot for users to closely view specific planets from the clusters. Hovering over any planet shows the important information in a tooltip.
+                to further drill down clicking on any of the planets leads to it's own solar system. The planets are displayed revolving around the star with thier radial velocity. A blue
+                circle represents the earth orbit for reference. You can mouse over the planets to pause the animation and gain interesting information about the planets. A green patch if visible shows
+                the habitable zone in the system
+            </p>
+        </div>
     </div>
 
-<div class="container"  id="main">
-    <iframe id="bubblechart" src = "bubble_chart/packedbubble.html" width="950" height="750" scrolling="no" frameborder="0"
-            allowfullscreen ></iframe>
+    <div id="design" style="display: none;">
+        <h4>SKETCHES</h4>
+        <p style="font-size: medium">Design 1</p>
+        <p>Some of the early designs that we laid out were on pen and paper, and really were continuously modified as we played more with the data.
+        We had chalked out some more that were not taken into implementation due to data constraints.</p>
+        <p>
+            This one below was the first insight we had after looking at the dataset, and also ended up as one of the implementations. However, since we
+            only had the discovery year of the exoplanets, the measure for x-axis in our design, the final result wasn't as scattered as we had foreseen.
+        </p>
+        <img src="images/design1.jpg">
+        <br>
+        <br>
+        <p style="font-size: medium">Design 2</p>
+        <p>
+            We really wanted something that could give a high-level summary view of these planets as being earth-like. Therefore, we though of using the
+            Earth similarity index value as a measure to arrange the habitable planets in radial orbits.
+        </p>
+        <img src="images/design2.jpg">
+    </div>
+    <div id="visualization" style="display: none;">
+        <div style="color: #FFFFFF">
+            <h3 > Earth Similarity Index Visualization</h3>
+            <p>
+                This visualization gives us a measure of the Earth Similarity Index value for some of the exoplanets discovered till date. A number of measures
+                related to the exoplanet such as radius, velocity, temperature are taken into consideration to calculate the ESI value. It falls in the range of 0-1,
+                1 meaning completely like Earth, and 0 meaning completely unlike Earth</p>
+            <p>
+                Planets shown in the outermost circle are the ones with the least ESI value, i.e. they are least likely to be like Earth. As we move towards
+                the inside the ESI value increases by a factor of 0.1 with decreasing circumference. The planets are scaled by the ESI value initially,
+                however you can also scale them by their actual radius values as well. They will still remain sorted by the ESI values moving from outside orbits to inside ones.
+                You can click on the planet to zoom into it, and hover over to get more generic information about them.
+            </p>
+        </div>
 
-
+        <div>
+            <iframe id="bubblechart" src = "bubble_chart/packedbubble.html" width="950" height="750" scrolling="no" frameborder="0"
+                    allowfullscreen ></iframe>
+        </div>
+        <div style="color: #FFFFFF">
+            <h3>Exoplanet Attributes Scatterplot </h3>
+            <p>This is a visualization drawing comparisons between some of the most important attributes of the exoplanets.
+                Each circle in the visualization is a planet. The color encoding is done on the basis of the method of discovery.</p>
+            <p>The scatter plot has x-axis as Year of discovery of the exoplanet and y-axis measure can be chosen from planet’s distance from earth in parsecs,
+                mass and radii with respect to Jupiter, orbital period in days and planets with habitable zone.</p>
+            <p>A user can zoom into the scatter plot, and get a closer view of these planets on the plot, and also hover over these planets to
+                get details about them. The habitable planet measure if selected, will show only the planets that are in the habitable zone, which
+                in turn is calculated using different measure values.</p>
+        </div>
+        <span class="badge">Sort By</span>
+        <select name="data-list">
+            <option value="st_dist">Star Distance</option>
+            <option value="pl_bmassj">Planet Mass</option>
+            <option value="pl_radj">Planet Radius</option>
+            <option value="pl_orbper">Planet Orbital Period</option>
+            <option value="pl_habitable_data">Planets with Habitable zone</option>
+        </select>
+        <div class="container"  id="scatter"></div>
+        <p>You can further click on  any of these circles to get even closer to the exoplanet, by looking into it's own solar system. The planets are
+            shown revolving around a star in radial orbits, the distance from the star being their orbital distance. The blue circle represents the Earth's orbit, for comparison.
+            There can be more than one planets in the system. A legend on the right gives more information about the size and scaling of the planet.</p>
+        <div id="my1" style="position: absolute; top: 2100px; left: 124px; width: 700px; height: 500px; background-color: black;">
+            <div id="my2" style="position: absolute; top: 0px; left: 700px; width: 155px; height: 500px; background-color: rgb(0,0,13);"></div>
+        </div>
+    </div>
 </div>
-<div style="color: #FFFFFF">
-    <h3>Exoplanet Attributes Scatterplot </h3>
-    <p>This is a visualization drawing comparisons btween some of the most important attributes of the exoplanets.
-        Each dot in the visualization is a planet. The color encoding is done on the basis of the method of discovery.</p>
-    <p>The scatter plot has x-axis as Year of discovery of the exoplanet and y-axis measure can be chosen from planet’s distance from earth in parsecs,
-        mass and radii with respect to Jupiter, orbital period in days and planets with habitable zone.</p>
-    <p>A user can zoom into the scatter plot, and get a closer view of these planets on the plot, and also hover over these planets to
-    get details about them. The habitable planet measure if selected, will show only the planets that are in the habitable zone, which
-    in turn is calculated using different measure values.</p>
-</div>
-    <span class="badge">Sort By</span>
-    <select name="data-list">
-        <option value="st_dist">Star Distance</option>
-        <option value="pl_bmassj">Planet Mass</option>
-        <option value="pl_radj">Planet Radius</option>
-        <option value="pl_orbper">Planet Orbital Period</option>
-        <option value="pl_habitable_data">Planets with Habitable zone</option>
-    </select>
-
-</div>
-    <div id="my1" style="position: absolute; top: 2100px; left: 124px; width: 700px; height: 500px; background-color: black;">
-        <div id="my2" style="position: absolute; top: 0px; left: 700px; width: 155px; height: 500px; background-color: rgb(0,0,13);"></div>
-    <!--&lt;!&ndash;</div>&ndash;&gt;</div>-->
-</div>
-
 </body>
 
     <script src="./js/planets_rep.js" charset="utf-8"></script>
-    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+
     <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
 <script src="https://d3js.org/d3-collection.v0.1.min.js"></script>
 <script src="https://d3js.org/d3-dispatch.v0.4.min.js"></script>
 <script src="https://d3js.org/d3-dsv.v0.3.min.js"></script>
 <script src="https://d3js.org/d3-request.v0.4.min.js"></script>
 <script src="https://d3js.org/d3-queue.v2.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </html>
