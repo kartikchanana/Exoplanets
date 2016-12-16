@@ -195,7 +195,7 @@
                 You can click on the planet to zoom into it, and hover over to get more generic information about them.
             </p>
         </div>
-
+        <br>
         <div>
             <iframe id="bubblechart" src = "bubble_chart/packedbubble.html" width="950" height="750" scrolling="no" frameborder="0"
                     allowfullscreen ></iframe>
@@ -222,14 +222,15 @@
         <p>You can further click on  any of these circles to get even closer to the exoplanet, by looking into it's own solar system. The planets are
             shown revolving around a star in radial orbits, the distance from the star being their orbital distance. The blue circle represents the Earth's orbit, for comparison.
             There can be more than one planets in the system. A legend on the right gives more information about the size and scaling of the planet.</p>
-        <div id="my1" style="position: absolute; top: 2100px; left: 124px; width: 700px; height: 500px; background-color: black;">
-            <div id="my2" style="position: absolute; top: 0px; left: 700px; width: 155px; height: 500px; background-color: rgb(0,0,13);"></div>
+        <div id="my1" style="position: absolute; top: 2100px; left: 124px; width: 700px; height: 500px; background-color: black; display: none">
+        <div id="my2" style="position: absolute; top: 0px; left: 700px; width: 155px; height: 500px; background-color: rgb(0,0,13); display: none;"></div>
         </div>
+        <script src="./js/planets_rep.js" charset="utf-8"></script>
     </div>
 </div>
 </body>
 
-    <script src="./js/planets_rep.js" charset="utf-8"></script>
+
 
     <script type="text/javascript" src="./js/jquery.tipsy.js"></script>
 <script src="https://d3js.org/d3-collection.v0.1.min.js"></script>

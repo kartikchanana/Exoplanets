@@ -19,6 +19,7 @@ function show_div(toShow)
     }
 
 }
+
 var margin = { top: 50, right: 300, bottom: 50, left: 50 },
     margin2 = { top: 430, right:300, bottom: 20, left: 50},
     outerWidth = 1050,
@@ -367,7 +368,8 @@ d3.csv("planets_updated.csv", function(data) {
 
 function placeSystemModel(planets, pl)
 {
-
+d3.select("#my1").style("display", "block");
+d3.select("#my2").style("display", "block");
 d3.selectAll(".system_model").remove(); //clear previous image.
 
 var w = 700;
